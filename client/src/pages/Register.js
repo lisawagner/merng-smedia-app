@@ -3,13 +3,12 @@ import { Button, Form } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 
-// import { AuthContext } from "../context/auth";
+import { AuthContext } from "../context/auth";
 import { useForm } from "../util/hooks";
 
 function Register(props) {
+  const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
-
-  // const context = useContext(AuthContext);
 
   const { onChange, onSubmit, values } = useForm(registerUser, {
     username: "",
@@ -21,7 +20,8 @@ function Register(props) {
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
     // -------------------------- THIS! -------------------------- //
     // omitting 'proxy' caused crashes
-    update(proxy, result) {
+    update(proxy, { data: { register: userData } }) {
+      context.login(userData);
       props.history.push("/");
     },
     onError(err) {

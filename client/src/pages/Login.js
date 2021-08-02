@@ -3,13 +3,12 @@ import { Button, Form } from "semantic-ui-react";
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 
-// import { AuthContext } from "../context/auth";
+import { AuthContext } from "../context/auth";
 import { useForm } from "../util/hooks";
 
 function Login(props) {
+  const context = useContext(AuthContext);
   const [errors, setErrors] = useState({});
-
-  // const context = useContext(AuthContext);
 
   const { onChange, onSubmit, values } = useForm(loginUserCallback, {
     username: "",
@@ -19,7 +18,8 @@ function Login(props) {
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     // -------------------------- THIS! -------------------------- //
     // omitting 'proxy' via '_,' caused crashes
-    update(proxy, result) {
+    update(proxy, { data: { login: userData } }) {
+      context.login(userData);
       props.history.push("/");
     },
     onError(err) {
