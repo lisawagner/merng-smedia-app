@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import { Button, Confirm } from "semantic-ui-react";
 
 import { FETCH_POSTS_QUERY } from "../util/graphql";
+import ToolTip from "../util/ToolTip";
 
 export default function DeleteButton({ postId, commentId, callback }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -37,13 +38,16 @@ export default function DeleteButton({ postId, commentId, callback }) {
 
   return (
     <>
-      <Button
-        as="div"
-        color="red"
-        floated="right"
-        icon="trash"
-        onClick={() => setConfirmOpen(true)}
-      ></Button>
+      <ToolTip content={commentId ? "Delete comment" : "Delete post"}>
+        <Button
+          as="div"
+          color="red"
+          floated="right"
+          icon="trash"
+          onClick={() => setConfirmOpen(true)}
+        ></Button>
+      </ToolTip>
+
       <Confirm
         open={confirmOpen}
         onCancel={() => setConfirmOpen(false)}
