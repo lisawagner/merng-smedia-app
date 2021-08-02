@@ -24,7 +24,8 @@ function Register(props) {
   };
 
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
-    update(_, result) {
+    // omitting 'proxy' caused crashes
+    update(proxy, result) {
       console.log(result);
       props.history.push("/");
     },
