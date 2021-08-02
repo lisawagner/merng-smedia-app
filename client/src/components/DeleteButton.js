@@ -3,13 +3,28 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import { Button, Confirm } from "semantic-ui-react";
 
-export default function DeleteButton({ postId }) {
+import { FETCH_POSTS_QUERY } from "../util/graphql";
+
+export default function DeleteButton({ postId, callback }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const [deletePost] = useMutation(DELETE_POST_MUTATION, {
-    update() {
+    update(proxy) {
       setConfirmOpen(false);
-      //   TODO: remove post from cache
+      //   Remove post from cache once it is deleted
+      const data = proxy.readQuery({
+        query: FETCH_POSTS_QUERY,
+      });
+      // data.getPosts = data.getPosts.filter((p) => p.id !== postId);
+      // proxy.writeQuery({ query: FETCH_POSTS_QUERY, data });
+      proxy.writeQuery({
+        query: FETCH_POSTS_QUERY,
+        data: {
+          getPosts: data.getPosts.filter((p) => p.id !== postId),
+        },
+      });
+
+      if (callback) callback();
     },
     variables: {
       postId,
