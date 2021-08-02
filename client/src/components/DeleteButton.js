@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
-import { Button, Confirm, Icon } from "semantic-ui-react";
+import { Button, Confirm } from "semantic-ui-react";
 
 export default function DeleteButton({ postId }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
