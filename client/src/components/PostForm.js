@@ -56,6 +56,12 @@ function PostForm() {
       {error && (
         <div className="ui error message" style={{ marginBottom: 20 }}>
           <ul className="list">
+            {/* ----------------------------------------------------- */}
+            {/* --------- if you're getting errors issues: ---------- */}
+            {/* ------------ remove: 'graphQLErrors[0].' ------------ */}
+            {/* ----------- DO: <li>{error.message}</li> -------------*/}
+            {/* ---------------- then trace the bug ----------------- */}
+            {/* ----------------------------------------------------- */}
             <li>{error.graphQLErrors[0].message}</li>
           </ul>
         </div>
