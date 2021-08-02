@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { Router, Redirect, Route } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
+
 import { AuthContext } from "../context/auth";
 
 function AuthRoute({ component: Component, ...rest }) {
