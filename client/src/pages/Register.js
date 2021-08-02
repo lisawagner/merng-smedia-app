@@ -4,65 +4,35 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 
 // import { AuthContext } from "../context/auth";
-// import { useForm } from "../util/hooks";
-
-// issue with setErrors
+import { useForm } from "../util/hooks";
 
 function Register(props) {
   const [errors, setErrors] = useState({});
-  const [values, setValues] = useState({
+
+  // const context = useContext(AuthContext);
+
+  const { onChange, onSubmit, values } = useForm(registerUser, {
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
 
-  // const context = useContext(AuthContext);
-
-  const onChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
-
   const [addUser, { loading }] = useMutation(REGISTER_USER, {
+    // -------------------------- THIS! -------------------------- //
     // omitting 'proxy' caused crashes
     update(proxy, result) {
-      console.log(result);
       props.history.push("/");
     },
     onError(err) {
-      console.log(err.graphQLErrors[0].extensions.errors);
       setErrors(err.graphQLErrors[0].extensions.errors);
     },
     variables: values,
   });
 
-  const onSubmit = (event) => {
-    event.preventDefault();
+  function registerUser() {
     addUser();
-  };
-
-  // const { onChange, onSubmit, values } = useForm(registerUser, {
-  //   username: "",
-  //   email: "",
-  //   password: "",
-  //   confirmPassword: "",
-  // });
-
-  // const [addUser, { loading }] = useMutation(REGISTER_USER, {
-  //   update(_, { data: { register: userData } }) {
-  //     context.login(userData);
-  //     props.history.push("/");
-  //   },
-  //   onError(err) {
-  //     // console.log(err.graphQLErrors[0].extensions.errors);
-  //     setErrors(err.graphQLErrors[0].extensions.errors);
-  //   },
-  //   variables: values,
-  // });
-
-  // function registerUser() {
-  //   addUser();
-  // }
+  }
 
   return (
     <div className="form-container">
